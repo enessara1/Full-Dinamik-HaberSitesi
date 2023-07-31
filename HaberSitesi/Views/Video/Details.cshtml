@@ -1,0 +1,237 @@
+﻿@model HaberSitesi.Models.DetailsDto<Video>
+@using DataAccess
+@using HaberSitesi.Services
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/Layouts/_videoLayout.cshtml";
+    ViewBag.Item = Model.Item.Title;
+}
+<div class="about-area mt-5">
+    <div class="container">
+        <!-- Hot Aimated News Tittle-->
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- Trending Tittle -->
+                <div class="about-right mb-90">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="video-items-active">
+                                @*<video controls id="videoPlayer" class="video-js vjs-default-skin" autoplay muted width="900" height="500" data-setup='{ "aspectRatio":"1920:1080", "playbackRates": [0.5,1, 1.5, 2, 2.5 , 3]  }'>*@
+                                <video controls id="videoPlayer" class="video-js vjs-default-skin" autoplay muted width="900" height="500" data-setup='{ "aspectRatio":"1920:1080", "playbackRates": [0.5,1, 1.5, 2, 2.5 , 3]  }'>
+                                    <source src="@ViewBag.apiUrl/@Model.Item.EmbedUrl" type="video/mp4">
+                                    <div id="duration"></div>
+
+
+                                </video>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-img">
+                        <h3 style="text-align:center">@Model.Item.Title</h3>
+                    </div>
+                    <div class="section-tittle mb-30 pt-30">
+                        <h5 style="text-align:center">@Model.Item.Description</h5>
+                    </div>
+
+                    <div class="social-share pt-30">
+                        <div class="section-tittle">
+                            <h3 class="mr-20">Paylaş:</h3>
+                            <ul>
+                                <li><a href="#"><img src="~/Content/assets/img/news/icon-ins.png" alt=""></a></li>
+                                <li><a href="#"><img src="~/Content/assets/img/news/icon-fb.png" alt=""></a></li>
+                                <li><a href="#"><img src="~/Content/assets/img/news/icon-tw.png" alt=""></a></li>
+                                <li><a href="#"><img src="~/Content/assets/img/news/icon-yo.png" alt=""></a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-8 col-sm-12">
+
+                        @using (Html.BeginForm("Create", "Reviews", FormMethod.Post))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="form-contact contact_form mb-80">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <input class="form-control error" required name="Title" id="Title" type="text" onfocus="this.placeholder = ''" oninvalid="this.setCustomValidity('Enter Subject')" oninput="this.setCustomValidity('')" onblur="this.placeholder = 'Konu giriniz'" placeholder="Konu giriniz">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control error" required oninvalid="this.setCustomValidity('Enter Name')" oninput="this.setCustomValidity('')" name="Name" id="Name" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Adınızı Giriniz'" placeholder="Adınızı Giriniz">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <input class="form-control error" required oninvalid="this.setCustomValidity('Enter Surname')" oninput="this.setCustomValidity('')" name="Surname" id="Surname" type="text" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Soyadınızı Giriniz'" placeholder="Soyadınızı Giriniz">
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <input class="form-control error" required oninvalid="this.setCustomValidity('Enter Email')" oninput="this.setCustomValidity('')" name="EMail" id="EMail" type="email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Giriniz'" placeholder="Email Giriniz">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <div class="form-group">
+                                            <textarea class="form-control w-100 error" required="required" oninvalid="this.setCustomValidity('Enter Message')" oninput="this.setCustomValidity('')" name="Message" id="Message" cols="30" rows="9" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Mesaj'" placeholder="Mesaj"></textarea>
+                                        </div>
+                                    </div>
+                                    <input type="number" name="Video_Id" id="Video_Id" value="@Model.Item.Id" hidden />
+                                </div>
+                                <span style="background-color:gray;">
+                                    @ViewBag.ResponseMessage
+                                </span>
+                                <div class="form-group mt-3">
+                                    <button type="submit" class="button button-contactForm boxed-btn">Gönder</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="trending-area">
+                    @Html.Partial("~/Views/Shared/Component/VideoSidebar.cshtml", Model.Sidebar)
+                </div>
+                @Html.Partial("~/Views/Shared/Component/Borsa.cshtml")
+                <!-- New Poster -->
+                <div class="news-poster d-none d-lg-block mt-4">
+                    <img src="~/Content/assets/img/news/news_card.jpg" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<style>
+    /* Player Skin Designer for Video.js http://videojs.com To customize the player skin edit the CSS below. Click "details" below to add comments or questions. This file uses some SCSS. Learn more at http://sass-lang.com/guide) This designer can be linked to at: https://codepen.io/heff/pen/EarCt/left/?editors=010 */
+    .video-js {
+        /* The base font size controls the size of everything, not just text. All dimensions use em-based sizes so that the scale along with the font size. Try increasing it to 15px and see what happens. */
+        font-size: 10px;
+        /* The main font color changes the ICON COLORS as well as the text */
+        color: #fff;
+    }
+    /* The "Big Play Button" is the play button that shows before the video plays. To center it set the align values to center and middle. The typical location of the button is the center, but there is trend towards moving it to a corner where it gets out of the way of valuable content in the poster image.*/
+    .vjs-default-skin .vjs-big-play-button {
+        /* The font size is what makes the big play button...big. All width/height values use ems, which are a multiple of the font size. If the .video-js font-size is 10px, then 3em equals 30px.*/
+        font-size: 3em;
+        /* We're using SCSS vars here because the values are used in multiple places. Now that font size is set, the following em values will be a multiple of the new font size. If the font-size is 3em (30px), then setting any of the following values to 3em would equal 30px. 3 * font-size. */
+        /* 1.5em = 45px default */
+        line-height: 1.5em;
+        height: 1.5em;
+        width: 3em;
+        /* 0.06666em = 2px default */
+        border: 0.06666em solid #fff;
+        /* 0.3em = 9px default */
+        border-radius: 0.3em;
+        /* Align top left. 0.5em = 15px default */
+        left: -webkit-calc(50% - 45px);
+        left: -moz-calc(50% - 45px);
+        left: calc(50% - 45px);
+        top: -webkit-calc(50% - 22px);
+        top: -moz-calc(50% - 22px);
+        top: calc(50% - 22px);
+    }
+    /* The default color of control backgrounds is mostly black but with a little bit of blue so it can still be seen on all-black video frames, which are common. */
+    .video-js .vjs-control-bar, .video-js .vjs-big-play-button, .video-js .vjs-menu-button .vjs-menu-content {
+        /* IE8 - has no alpha support */
+        background-color: #2b333f;
+        /* Opacity: 1.0 = 100%, 0.0 = 0% */
+        background-color: rgba(43, 51, 63, 0.7);
+    }
+    /* Slider - used for Volume bar and Progress bar */
+    .video-js .vjs-slider {
+        background-color: #73859f;
+        background-color: rgba(115, 133, 159, 0.5);
+    }
+    /* The slider bar color is used for the progress bar and the volume bar (the first two can be removed after a fix that's coming) */
+    .video-js .vjs-volume-level, .video-js .vjs-play-progress, .video-js .vjs-slider-bar {
+        background: #fff;
+    }
+    /* The main progress bar also has a bar that shows how much has been loaded. */
+    .video-js .vjs-load-progress {
+        /* For IE8 we'll lighten the color */
+        background: #bfc7d3;
+        /* Otherwise we'll rely on stacked opacities */
+        background: rgba(115, 133, 159, 0.5);
+    }
+        /* The load progress bar also has internal divs that represent smaller disconnected loaded time ranges */
+        .video-js .vjs-load-progress div {
+            /* For IE8 we'll lighten the color */
+            background: #fff;
+            /* Otherwise we'll rely on stacked opacities */
+            background: rgba(115, 133, 159, 0.75);
+        }
+
+    #videoPlayer_html5_api {
+        width: 100% !important;
+        z-index: unset !important;
+        height: 100%;
+        object-fit: contain;
+        position: absolute !important;
+    }
+</style>
+<script>
+    const myvideom = document.getElementById("videoPlayer");
+    myvideom.onpause = () => { document.getElementById("videoPlayer_html5_api").style.position = "relative" };
+
+
+
+</script>
+
+
+
+<script>
+   
+    var player = window.player = videojs("videoPlayer");
+
+    if (player) {
+        player.play();
+    }
+
+
+    var hms = '@Model.Item.VideoTime';
+    var a = hms.split(':');
+    var seconds = (+a[0]) * 60 * 60 + (+a[1]) * 60 + (+a[2]);
+
+
+    player.vastWaterfall({
+        preroll:
+            [
+                {
+                    ads: ["../../XMLFiles/Prerolls.xml"]
+
+
+
+                }
+            ],
+        midroll:
+            [
+                {
+
+
+                    ads: ["../../XMLFiles/Midrolls.xml"],
+                    time: seconds/2
+                }
+            ],
+        postroll:
+            [
+                {
+                    ads: ["../../XMLFiles/Postrolls.xml"]
+                }
+            ],
+        flashWrapperPath: "https://unpkg.com/vpaid-flash-client@0.1.9/bin/VPAIDFlash.swf",
+        debug: true
+    })
+
+</script>
+
+
